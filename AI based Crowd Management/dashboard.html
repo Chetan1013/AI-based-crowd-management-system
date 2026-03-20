@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Monitoring Dashboard | CrowdVision AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <nav>
+        <div class="brand">
+            <span class="icon"><i class="fas fa-eye"></i></span>
+            <span>CrowdVision AI</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="about.html">About Project</a></li>
+        </ul>
+        <div class="user-profile">
+            <span class="status-indicator status-safe">Online</span>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Alert Box (Hidden by default) -->
+        <div id="alert_box" class="alert-box" style="grid-column: span 2; display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>🚨 Crowd limit exceeded – take immediate action</span>
+        </div>
+
+        <!-- Video Stream / Upload -->
+        <div class="video-section">
+            <div class="video-placeholder" id="video_container">
+                <div class="video-info">
+                    CAM-01 | AI PROCESSOR | ACTIVE
+                    <button id="clear_video" class="btn-clear" style="display: none; margin-left: 10px; background: rgba(248, 81, 73, 0.2); border: 1px solid var(--danger); color: var(--danger); font-size: 0.6rem; padding: 2px 8px; border-radius: 4px; cursor: pointer;">
+                        <i class="fas fa-trash-alt"></i> REMOVE FILE
+                    </button>
+                </div>
+                
+                <div class="video-wrapper" style="position: relative; width: 100%; height: 100%;">
+                    <!-- Video Player -->
+                    <video id="video_player" style="display: none; width: 100%; height: 100%; object-fit: contain;"></video>
+                    <!-- Bounding Box Overlay -->
+                    <canvas id="detection_canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: none;"></canvas>
+                </div>
+
+                <!-- Initial Upload UI -->
+                <div id="upload_ui" class="stream-overlay">
+                    <div class="upload-zone" onclick="document.getElementById('video_upload').click()">
+                        <i class="fas fa-video-camera" style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent);"></i>
+                        <p>Upload Video for Real-Time Analysis</p>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">DRAG & DROP OR BROWSE</span>
+                        <input type="file" id="video_upload" accept="video/*" hidden>
+                    </div>
+                </div>
+
+                <!-- Analysis Progress Overlay (Hidden) -->
+                <div id="analysis_overlay" class="analysis-overlay" style="display: none;">
+                    <div class="scanner-line"></div>
+                    <div class="analysis-stats">
+                        <i class="fas fa-atom fa-spin" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--accent);"></i>
+                        <h3>INITIALIZING YOLO v8...</h3>
+                        <div class="progress-bar"><div id="progress_fill" class="progress-fill"></div></div>
+                        <p id="analysis_percent">0%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Panel -->
+        <div class="stats-panel">
+            <div class="stat-card">
+                <div>
+                    <p class="stat-label">People Detected</p>
+                    <h2 id="people_count" class="stat-value">0</h2>
+                </div>
+                <div class="stat-trend"><i class="fas fa-chart-line"></i> LIVE</div>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <p class="stat-label">Maximum Capacity</p>
+                    <h2 id="max_capacity" class="stat-value">30</h2>
+                </div>
+                <i class="fas fa-cog fa-spin" style="color: var(--text-muted); font-size: 1.5rem;"></i>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <p class="stat-label">Crowd Status</p>
+                    <h2 id="crowd_status" class="status-indicator status-safe" style="display: inline-block; margin-top: 5px; font-size: 1rem;">Safe</h2>
+                </div>
+                <div id="status_meter" style="width: 40px; height: 40px; border-radius: 50%; border: 4px solid var(--success); transition: 0.5s;"></div>
+            </div>
+
+            <div class="stat-card" style="flex: 1; min-height: 250px; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 1rem;">
+                <p class="stat-label">System Logs</p>
+                <div id="logs">
+                    [14:15:22] System initialized.<br>
+                    [14:15:23] YOLO v8 weight files loaded.<br>
+                    [14:15:24] Feed CAM-01 connected.<br>
+                    [14:15:25] Start Monitoring...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 CrowdVision AI University Project.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
